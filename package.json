@@ -1,0 +1,18 @@
+{
+  "name": "udlms-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "npm run dev:api & npm run dev:web",
+    "dev:api": "npm run dev -w apps/api",
+    "dev:web": "npm run dev -w apps/web",
+    "build": "npm run build -w apps/api && npm run build -w apps/web",
+    "setup": "powershell -ExecutionPolicy Bypass -File ./scripts/setup.ps1",
+    "setup:with-db": "powershell -ExecutionPolicy Bypass -File ./scripts/setup.ps1 -StartPostgres",
+    "run:local": "powershell -ExecutionPolicy Bypass -File ./scripts/run-local.ps1",
+    "run:docker": "powershell -ExecutionPolicy Bypass -File ./scripts/run-docker.ps1"
+  }
+}

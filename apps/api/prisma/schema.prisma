@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  LIBRARIAN
+  ADMIN
+}
+
+enum LoanStatus {
+  ACTIVE
+  RETURNED
+  OVERDUE
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(STUDENT)
+  createdAt    DateTime @default(now())
+  loans        Loan[]
+  reservations Reservation[]
+  auditEntries AuditLog[]
+}
+
+model CatalogItem {
+  id           Int      @id @default(autoincrement())
+  title        String
+  author       String
+  isbn         String   @unique
+  subject      String
+  resourceType String
+  year         Int
+  totalCopies  Int
+  available    Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  loans        Loan[]
+  reservations Reservation[]
+}
+
+model Loan {
+  id         Int        @id @default(autoincrement())
+  userId     Int
+  itemId     Int
+  status     LoanStatus @default(ACTIVE)
+  checkedOut DateTime   @default(now())
+  dueDate    DateTime
+  returnedAt DateTime?
+  renewed    Int        @default(0)
+  user       User       @relation(fields: [userId], references: [id])
+  item       CatalogItem @relation(fields: [itemId], references: [id])
+}
+
+model Reservation {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  itemId     Int
+  queueOrder Int
+  createdAt  DateTime @default(now())
+  user       User      @relation(fields: [userId], references: [id])
+  item       CatalogItem @relation(fields: [itemId], references: [id])
+}
+
+model Policy {
+  id              Int      @id @default(1)
+  loanDays        Int      @default(14)
+  maxRenewals     Int      @default(2)
+  finePerDayCents Int      @default(50)
+  holdDays        Int      @default(7)
+  updatedAt       DateTime @updatedAt
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  actorId   Int?
+  action    String
+  entity    String
+  details   String
+  createdAt DateTime @default(now())
+  actor     User?    @relation(fields: [actorId], references: [id])
+}

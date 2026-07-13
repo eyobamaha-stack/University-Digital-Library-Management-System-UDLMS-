@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UDLMS — University Digital Library Management System | Eyob Amaha Araya | UGR/189595/16</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+/* ── CSS custom properties ─────────────────────────────────────── */
+:root {
+  --navy:     #0F2D52;
+  --navy-mid: #1A4580;
+  --blue:     #2563EB;
+  --blue-lt:  #EFF6FF;
+  --teal:     #0D9488;
+  --teal-lt:  #F0FDFA;
+  --amber:    #D97706;
+  --amber-lt: #FFFBEB;
+  --red:      #DC2626;
+  --red-lt:   #FEF2F2;
+  --green:    #16A34A;
+  --green-lt: #F0FDF4;
+  --gray-50:  #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+  --white:    #FFFFFF;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
+  --shadow:    0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.05);
+  --shadow-md: 0 10px 25px rgba(0,0,0,.09), 0 4px 8px rgba(0,0,0,.05);
+  --shadow-lg: 0 20px 40px rgba(0,0,0,.12);
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset & base ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--font-sans);
+  background: var(--gray-50);
+  color: var(--gray-800);
+  min-height: 100vh;
+}
+button { cursor: pointer; font-family: var(--font-sans); border: none; outline: none; }
+input, select, textarea { font-family: var(--font-sans); }
+a { color: inherit; text-decoration: none; }
+
+/* ── Layout ────────────────────────────────────────────────────── */
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ── Header / Nav ──────────────────────────────────────────────── */
+.header {
+  background: var(--navy);
+  color: var(--white);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.header-logo {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--teal), #0891B2);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.header-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.header-subtitle {
+  font-size: 0.7rem;
+  color: #94C5E0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.nav-btn {
+  background: none;
+  color: #CBD5E1;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+.nav-btn:hover { background: rgba(255,255,255,.1); color: white; }
+.nav-btn.active { background: rgba(255,255,255,.15); color: white; }
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.user-role-badge {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #E0F2FE;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.user-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--blue));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+  border: 2px solid rgba(255,255,255,.25);
+  cursor: pointer;
+}
+.role-switcher {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.role-switcher option { color: var(--gray-800); background: white; }
+
+/* ── Page container ────────────────────────────────────────────── */
+.page { display: none; flex: 1; }
+.page.active { display: block; }
+
+/* ── Hero / Search page ────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 50%, #1E5B8A 100%);
+  padding: 3.5rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60%; left: -20%;
+  width: 140%; height: 200%;
+  background: radial-gradient(ellipse at 30% 40%, rgba(13,148,136,.18) 0%, transparent 55%),
+              radial-gradient(ellipse at 70% 20%, rgba(37,99,235,.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7DD3FC;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  color: white;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+.hero-title em {
+  font-style: italic;
+  color: #7DD3FC;
+}
+.hero-desc {
+  color: #94C5E0;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+.search-box {
+  max-width: 640px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.search-input-wrap {
+  display: flex;
+  background: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.28), 0 2px 8px rgba(0,0,0,.15);
+}
+.search-input {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  border: none;
+  font-size: 1rem;
+  color: var(--gray-800);
+  background: transparent;
+  outline: none;
+}
+.search-input::placeholder { color: var(--gray-400); }
+.search-btn {
+  background: var(--navy);
+  color: white;
+  padding: 0 1.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+.search-btn:hover { background: var(--navy-mid); }
+.search-filters {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.filter-chip {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #CBD5E1;
+  padding: 0.3rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.filter-chip:hover, .filter-chip.active {
+  background: rgba(255,255,255,.22);
+  color: white;
+  border-color: rgba(255,255,255,.4);
+}
+
+/* ── Stats bar ─────────────────────────────────────────────────── */
+.stats-bar {
+  background: white;
+  border-bottom: 1px solid var(--gray-200);
+  padding: 0.75rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--navy);
+  line-height: 1;
+}
+.stat-lbl {
+  font-size: 0.7rem;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 1px;
+}
+.stat-divider { width: 1px; height: 36px; background: var(--gray-200); }
+
+/* ── Results area ──────────────────────────────────────────────── */
+.results-area {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+.sidebar-panel {
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  padding: 1.25rem;
+  position: sticky;
+  top: 80px;
+  box-shadow: var(--shadow-sm);
+}
+.sidebar-title {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-500);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+.filter-group { margin-bottom: 1.25rem; }
+.filter-group-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 0.5rem;
+}
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.83rem;
+  color: var(--gray-600);
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.filter-option:hover { background: var(--gray-50); color: var(--gray-800); }
+.filter-option input[type=checkbox] { accent-color: var(--blue); }
+.filter-count {
+  margin-left: auto;
+  background: var(--gray-100);
+  color: var(--gray-500);
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 20px;
+}
+
+/* ── Results list ──────────────────────────────────────────────── */
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.results-count {
+  font-size: 0.88rem;
+  color: var(--gray-600);
+}
+.results-count strong { color: var(--gray-800); }
+.sort-select {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--gray-700);
+  background: white;
+  cursor: pointer;
+}
+.book-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  gap: 1.25rem;
+  transition: var(--transition);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+.book-card:hover {
+  border-color: var(--blue);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.book-cover {
+  width: 64px;
+  min-width: 64px;
+  height: 88px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  position: relative;
+  overflow: hidden;
+}
+.book-info { flex: 1; }
+.book-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin-bottom: 0.2rem;
+  line-height: 1.3;
+}
+.book-author {
+  font-size: 0.83rem;
+  color: var(--gray-500);
+  margin-bottom: 0.5rem;
+}
+.book-meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+.tag-subject { background: #EFF6FF; color: #1D4ED8; }
+.tag-type    { background: #F0FDF4; color: #166534; }
+.tag-year    { background: var(--gray-100); color: var(--gray-600); }
+.tag-doi     { background: #FDF4FF; color: #7E22CE; }
+.book-availability {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.82rem;
+}
+.avail-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.avail-available { background: var(--green); }
+.avail-limited   { background: var(--amber); }
+.avail-out       { background: var(--red); }
+.book-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  min-width: 110px;
+}
+.btn {
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: center;
+  transition: var(--transition);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+.btn-primary {
+  background: var(--navy);
+  color: white;
+  border: none;
+}
+.btn-primary:hover { background: var(--navy-mid); }
+.btn-secondary {
+  background: white;
+  color: var(--navy);
+  border: 1px solid var(--gray-300);
+}
+.btn-secondary:hover { background: var(--gray-50); border-color: var(--navy); }
+.btn-teal { background: var(--teal); color: white; border: none; }
+.btn-teal:hover { background: #0F766E; }
+.btn-ghost { background: transparent; color: var(--gray-600); border: 1px solid var(--gray-200); }
+.btn-ghost:hover { background: var(--gray-50); }
+.btn-danger { background: var(--red); color: white; border: none; }
+.btn-danger:hover { background: #B91C1C; }
+.btn-sm { padding: 0.3rem 0.7rem; font-size: 0.78rem; }
+.btn-lg { padding: 0.7rem 1.5rem; font-size: 0.95rem; }
+
+/* ── Loans page ────────────────────────────────────────────────── */
+.page-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.page-header {
+  margin-bottom: 1.75rem;
+}
+.page-header h1 {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+.page-header p {
+  color: var(--gray-500);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+.stat-card-num {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.stat-card-label { font-size: 0.82rem; color: var(--gray-500); }
+.stat-card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-200);
+  margin-left: 0.5rem;
+}
+
+.loan-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+.loan-card:hover { box-shadow: var(--shadow); }
+.loan-icon {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.loan-info { flex: 1; }
+.loan-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--gray-800);
+  margin-bottom: 0.15rem;
+}
+.loan-author { font-size: 0.8rem; color: var(--gray-500); }
+.loan-due {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+.due-ok     { background: var(--green-lt); color: var(--green); }
+.due-soon   { background: var(--amber-lt); color: var(--amber); }
+.due-overdue{ background: var(--red-lt);   color: var(--red); }
+.loan-actions { display: flex; gap: 0.5rem; }
+
+/* ── Alert / notification banner ──────────────────────────────── */
+.alert {
+  border-radius: var(--radius);
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+}
+.alert-warn { background: var(--amber-lt); border: 1px solid #FCD34D; color: #92400E; }
+.alert-info { background: var(--blue-lt);  border: 1px solid #BFDBFE; color: #1E40AF; }
+.alert-success { background: var(--green-lt); border: 1px solid #86EFAC; color: #14532D; }
+.alert-error { background: var(--red-lt); border: 1px solid #FECACA; color: #991B1B; }
+
+/* ── Librarian panel ───────────────────────────────────────────── */
+.panel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.panel-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+.panel-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+.form-group { margin-bottom: 1rem; }
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.form-control {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  color: var(--gray-800);
+  background: white;
+  transition: var(--transition);
+  outline: none;
+}
+.form-control:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+.form-control:disabled { background: var(--gray-50); color: var(--gray-400); cursor: not-allowed; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.data-table th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  background: var(--gray-50);
+  color: var(--gray-600);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--gray-200);
+}
+.data-table td {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--gray-100);
+  color: var(--gray-700);
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--gray-50); }
+.status-badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.status-on-loan  { background: #EFF6FF; color: #1D4ED8; }
+.status-available{ background: #F0FDF4; color: #166534; }
+.status-overdue  { background: #FEF2F2; color: #DC2626; }
+.status-reserved { background: #FDF4FF; color: #7E22CE; }
+
+/* ── Admin page ────────────────────────────────────────────────── */
+.admin-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+.admin-sidebar {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 80px;
+}
+.admin-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.8rem 1.1rem;
+  font-size: 0.85rem;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+}
+.admin-menu-item:hover { background: var(--gray-50); color: var(--gray-800); }
+.admin-menu-item.active {
+  background: var(--blue-lt);
+  color: var(--blue);
+  border-left-color: var(--blue);
+  font-weight: 600;
+}
+.range-control {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.range-control input[type=range] {
+  flex: 1;
+  accent-color: var(--navy);
+}
+.range-value {
+  min-width: 60px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.9rem;
+  background: var(--blue-lt);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.5rem;
+}
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.toggle-row:last-child { border-bottom: none; }
+.toggle-name { font-size: 0.88rem; font-weight: 500; color: var(--gray-800); }
+.toggle-desc { font-size: 0.78rem; color: var(--gray-500); margin-top: 0.15rem; }
+.toggle {
+  width: 42px; height: 24px;
+  background: var(--gray-300);
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.toggle.on { background: var(--teal); }
+.toggle::after {
+  content: '';
+  width: 18px; height: 18px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px; left: 3px;
+  transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.toggle.on::after { left: 21px; }
+
+/* ── Toast notification ────────────────────────────────────────── */
+#toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--gray-900);
+  color: white;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 320px;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+#toast .toast-icon { font-size: 1.1rem; }
+
+/* ── Modal ─────────────────────────────────────────────────────── */
+.modal-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(15,45,82,.6);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  max-width: 520px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn .25s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes modalIn {
+  from { transform: scale(0.9) translateY(20px); opacity: 0; }
+  to   { transform: scale(1)   translateY(0);    opacity: 1; }
+}
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--navy);
+  margin-bottom: 0.25rem;
+}
+.modal-sub { font-size: 0.85rem; color: var(--gray-500); margin-bottom: 1.5rem; }
+.modal-body { margin-bottom: 1.5rem; }
+.modal-detail-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.88rem;
+}
+.modal-detail-label { color: var(--gray-500); min-width: 90px; flex-shrink: 0; }
+.modal-detail-value { color: var(--gray-800); font-weight: 500; }
+.modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+
+/* ── Availability bar ──────────────────────────────────────────── */
+.avail-bar {
+  height: 4px;
+  background: var(--gray-200);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.avail-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ── Footer ────────────────────────────────────────────────────── */
+.footer {
+  background: var(--navy);
+  color: #94A3B8;
+  text-align: center;
+  padding: 1.25rem;
+  font-size: 0.78rem;
+  margin-top: auto;
+}
+.footer strong { color: #CBD5E1; }
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .results-area { grid-template-columns: 1fr; }
+  .sidebar-panel { display: none; }
+  .panel-grid { grid-template-columns: 1fr; }
+  .admin-grid { grid-template-columns: 1fr; }
+  .dashboard-grid { grid-template-columns: 1fr 1fr; }
+  .header-nav { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ════════════════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════════════════ -->
+<header class="header">
+  <div class="header-brand">
+    <div class="header-logo">📚</div>
+    <div>
+      <div class="header-title">UDLMS</div>
+      <div class="header-subtitle">University Digital Library</div>
+    </div>
+  </div>
+
+  <nav class="header-nav">
+    <button class="nav-btn active" onclick="showPage('search')">Search</button>
+    <button class="nav-btn" onclick="showPage('loans')">My Loans</button>
+    <button class="nav-btn" id="nav-librarian" onclick="showPage('librarian')">Librarian</button>
+    <button class="nav-btn" id="nav-admin" onclick="showPage('admin')">Admin</button>
+  </nav>
+
+  <div class="header-user">
+    <select class="role-switcher" id="roleSwitcher" onchange="switchRole(this.value)">
+      <option value="student">👤 Student</option>
+      <option value="librarian">📋 Librarian</option>
+      <option value="admin">🔧 Admin</option>
+    </select>
+    <div class="user-role-badge" id="roleBadge">Student</div>
+    <div class="user-avatar" id="userAvatar" title="Logged in user">JD</div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PAGE: SEARCH / CATALOG
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page active" id="page-search">
+  <!-- Hero search -->
+  <div class="hero">
+    <div class="hero-eyebrow">University Digital Library Management System</div>
+    <h1 class="hero-title">Find your next <em>great read</em></h1>
+    <p class="hero-desc">Search across 287,413 books, journals, theses, and digital resources in the university collection.</p>
+    <div class="search-box">
+      <div class="search-input-wrap">
+        <span style="padding:0 0 0 1.1rem; display:flex; align-items:center; color:#94A3B8; font-size:1.1rem;">🔍</span>
+        <input class="search-input" type="text" id="searchInput" placeholder="Search by title, author, ISBN, subject…" oninput="filterBooks()" />
+        <button class="search-btn" onclick="filterBooks()">Search</button>
+      </div>
+      <div class="search-filters">
+        <span class="filter-chip active" onclick="setFilter('all', this)">All Types</span>
+        <span class="filter-chip" onclick="setFilter('book', this)">Books</span>
+        <span class="filter-chip" onclick="setFilter('journal', this)">Journals</span>
+        <span class="filter-chip" onclick="setFilter('thesis', this)">Theses</span>
+        <span class="filter-chip" onclick="setFilter('digital', this)">Digital</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div style="background:var(--navy); border-bottom:1px solid #1E3A5F; padding:0.55rem 2rem; display:flex; align-items:center; justify-content:center; gap:1.5rem; flex-wrap:wrap;">
+    <span style="font-size:0.78rem; color:#94C5E0; letter-spacing:0.03em">
+      <span style="color:#7DD3FC; font-weight:700">Student:</span>&nbsp; Eyob Amaha Araya
+    </span>
+    <span style="color:#1E3A5F">|</span>
+    <span style="font-size:0.78rem; color:#94C5E0;">
+      <span style="color:#7DD3FC; font-weight:700">ID:</span>&nbsp; UGR/189595/16
+    </span>
+    <span style="color:#1E3A5F">|</span>
+    <span style="font-size:0.78rem; color:#94C5E0;">
+      <span style="color:#7DD3FC; font-weight:700">Section:</span>&nbsp; 2
+    </span>
+    <span style="color:#1E3A5F">|</span>
+    <span style="font-size:0.78rem; color:#94C5E0;">
+      <span style="color:#7DD3FC; font-weight:700">Course:</span>&nbsp; SENG5232 — Software Architecture and Design
+    </span>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">287,413</div>
+      <div class="stat-lbl">Total Resources</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">12,840</div>
+      <div class="stat-lbl">Available Now</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">4,211</div>
+      <div class="stat-lbl">Digital Resources</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">1,847</div>
+      <div class="stat-lbl">Active Loans</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-num">&#60; 0.9s</div>
+      <div class="stat-lbl">Avg Search Time</div>
+    </div>
+  </div>
+
+  <!-- Results area -->
+  <div class="results-area">
+    <!-- Sidebar filters -->
+    <aside class="sidebar-panel">
+      <div class="sidebar-title">Refine Results</div>
+      <div class="filter-group">
+        <div class="filter-group-name">Availability</div>
+        <label class="filter-option"><input type="checkbox" checked> Available Now <span class="filter-count">8,421</span></label>
+        <label class="filter-option"><input type="checkbox"> On Loan <span class="filter-count">3,218</span></label>
+        <label class="filter-option"><input type="checkbox"> Digital Only <span class="filter-count">4,211</span></label>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-name">Resource Type</div>
+        <label class="filter-option"><input type="checkbox" checked> Books <span class="filter-count">189,420</span></label>
+        <label class="filter-option"><input type="checkbox" checked> Journals <span class="filter-count">62,840</span></label>
+        <label class="filter-option"><input type="checkbox"> Theses <span class="filter-count">24,110</span></label>
+        <label class="filter-option"><input type="checkbox"> Datasets <span class="filter-count">11,043</span></label>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-name">Subject Area</div>
+        <label class="filter-option"><input type="checkbox"> Computer Science <span class="filter-count">18,420</span></label>
+        <label class="filter-option"><input type="checkbox"> Engineering <span class="filter-count">22,140</span></label>
+        <label class="filter-option"><input type="checkbox"> Medicine <span class="filter-count">31,200</span></label>
+        <label class="filter-option"><input type="checkbox"> Business <span class="filter-count">14,880</span></label>
+        <label class="filter-option"><input type="checkbox"> Humanities <span class="filter-count">48,320</span></label>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-name">Publication Year</div>
+        <label class="filter-option"><input type="checkbox"> 2020 – 2025 <span class="filter-count">12,480</span></label>
+        <label class="filter-option"><input type="checkbox"> 2010 – 2019 <span class="filter-count">48,210</span></label>
+        <label class="filter-option"><input type="checkbox"> Before 2010 <span class="filter-count">226,723</span></label>
+      </div>
+    </aside>
+
+    <!-- Book results -->
+    <div>
+      <div class="results-header">
+        <div class="results-count" id="resultsCount"><strong>8</strong> results found</div>
+        <select class="sort-select">
+          <option>Sort: Relevance</option>
+          <option>Sort: Date (Newest)</option>
+          <option>Sort: Title A–Z</option>
+          <option>Sort: Author A–Z</option>
+        </select>
+      </div>
+      <div id="bookList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PAGE: MY LOANS
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-loans">
+  <div class="page-inner">
+    <div class="page-header">
+      <h1>My Library Account</h1>
+      <p>Welcome back, <strong id="loanUserName">Jordan Davies</strong> — here's an overview of your account.</p>
+    </div>
+
+    <!-- Alerts -->
+    <div class="alert alert-warn">
+      <span>⚠️</span>
+      <div><strong>Overdue item:</strong> "Clean Code" was due on 28 Apr 2025. A fine of $0.50/day is being charged. Please return it promptly.</div>
+    </div>
+    <div class="alert alert-info">
+      <span>🔔</span>
+      <div><strong>Hold ready:</strong> "System Design Interview" is available for collection at the Main Library until 10 May 2025.</div>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <div class="stat-card-icon">📖</div>
+        <div class="stat-card-num">3</div>
+        <div class="stat-card-label">Active Loans</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">🔖</div>
+        <div class="stat-card-num">2</div>
+        <div class="stat-card-label">Reservations</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon">💰</div>
+        <div class="stat-card-num" style="color:var(--red)">$2.00</div>
+        <div class="stat-card-label">Outstanding Fines</div>
+      </div>
+    </div>
+
+    <!-- Active loans -->
+    <div class="section-title">📚 Active Loans</div>
+
+    <div class="loan-card">
+      <div class="loan-icon" style="background:#FEF3C7">📙</div>
+      <div class="loan-info">
+        <div class="loan-title">Clean Code: A Handbook of Agile Software Craftsmanship</div>
+        <div class="loan-author">Robert C. Martin · Prentice Hall, 2008</div>
+      </div>
+      <div>
+        <div class="loan-due due-overdue">⚠ 4 days overdue</div>
+        <div style="font-size:0.75rem; color:var(--gray-500); margin-top:4px; text-align:center">Due 28 Apr 2025</div>
+      </div>
+      <div class="loan-actions">
+        <button class="btn btn-danger btn-sm" onclick="showToast('✅', 'Return request submitted for Clean Code.')">Return</button>
+      </div>
+    </div>
+
+    <div class="loan-card">
+      <div class="loan-icon" style="background:#EFF6FF">📘</div>
+      <div class="loan-info">
+        <div class="loan-title">Designing Data-Intensive Applications</div>
+        <div class="loan-author">Martin Kleppmann · O'Reilly Media, 2017</div>
+      </div>
+      <div>
+        <div class="loan-due due-soon">⏰ Due in 3 days</div>
+        <div style="font-size:0.75rem; color:var(--gray-500); margin-top:4px; text-align:center">Due 05 May 2025</div>
+      </div>
+      <div class="loan-actions">
+        <button class="btn btn-secondary btn-sm" onclick="showToast('🔄', 'Loan renewed until 19 May 2025.')">Renew</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('✅', 'Return request submitted.')">Return</button>
+      </div>
+    </div>
+
+    <div class="loan-card">
+      <div class="loan-icon" style="background:#F0FDF4">📗</div>
+      <div class="loan-info">
+        <div class="loan-title">The Pragmatic Programmer: From Journeyman to Master</div>
+        <div class="loan-author">David Thomas, Andrew Hunt · Addison-Wesley, 2019</div>
+      </div>
+      <div>
+        <div class="loan-due due-ok">✓ 11 days left</div>
+        <div style="font-size:0.75rem; color:var(--gray-500); margin-top:4px; text-align:center">Due 13 May 2025</div>
+      </div>
+      <div class="loan-actions">
+        <button class="btn btn-secondary btn-sm" onclick="showToast('🔄', 'Loan renewed until 27 May 2025.')">Renew</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('✅', 'Return request submitted.')">Return</button>
+      </div>
+    </div>
+
+    <!-- Reservations -->
+    <div class="section-title" style="margin-top:2rem">🔖 Reservations</div>
+
+    <div class="loan-card">
+      <div class="loan-icon" style="background:#F0FDF4">📗</div>
+      <div class="loan-info">
+        <div class="loan-title">System Design Interview – An Insider's Guide</div>
+        <div class="loan-author">Alex Xu · ByteByteGo, 2020</div>
+      </div>
+      <div>
+        <div class="loan-due" style="background:#D1FAE5;color:#065F46">📍 Ready to Collect</div>
+        <div style="font-size:0.75rem; color:var(--gray-500); margin-top:4px; text-align:center">Expires 10 May 2025</div>
+      </div>
+      <div class="loan-actions">
+        <button class="btn btn-primary btn-sm">Collect</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('❌', 'Reservation cancelled.')">Cancel</button>
+      </div>
+    </div>
+
+    <div class="loan-card">
+      <div class="loan-icon" style="background:#FDF4FF">📕</div>
+      <div class="loan-info">
+        <div class="loan-title">Introduction to Algorithms (CLRS), 4th Edition</div>
+        <div class="loan-author">Cormen, Leiserson, Rivest, Stein · MIT Press, 2022</div>
+      </div>
+      <div>
+        <div class="loan-due" style="background:#F3E8FF;color:#6B21A8">⏳ Queue: #2</div>
+        <div style="font-size:0.75rem; color:var(--gray-500); margin-top:4px; text-align:center">Est. ~6 days wait</div>
+      </div>
+      <div class="loan-actions">
+        <button class="btn btn-ghost btn-sm" onclick="showToast('❌', 'Reservation cancelled.')">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Fines section -->
+    <div class="section-title" style="margin-top:2rem">💳 Fines & Payments</div>
+    <div style="background:white; border:1px solid var(--gray-200); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm);">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Reason</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Clean Code</td>
+            <td>Overdue (4 days × $0.50)</td>
+            <td>28 Apr 2025</td>
+            <td style="color:var(--red);font-weight:600">$2.00</td>
+            <td><button class="btn btn-primary btn-sm" onclick="showToast('💳', 'Payment of $2.00 processed successfully.')">Pay Now</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PAGE: LIBRARIAN
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-librarian">
+  <div class="page-inner">
+    <div class="page-header">
+      <h1>Librarian Dashboard</h1>
+      <p>Manage catalog records, process loan requests, and monitor circulation.</p>
+    </div>
+
+    <div class="alert alert-warn">
+      <span>📋</span>
+      <div><strong>3 items overdue</strong> — Automated fine notices sent this morning. <a href="#" onclick="showToast('📧','Fine notices resent to 3 patrons.')" style="color:var(--amber);font-weight:600">Resend notices</a></div>
+    </div>
+
+    <div class="panel-grid">
+      <!-- Catalog item form -->
+      <div class="panel-card">
+        <div class="panel-card-title">➕ Add / Update Catalog Item</div>
+        <div class="form-group">
+          <label class="form-label">ISBN</label>
+          <div style="display:flex;gap:0.5rem">
+            <input class="form-control" type="text" placeholder="e.g. 978-0-13-468599-1" id="isbnInput">
+            <button class="btn btn-secondary btn-sm" onclick="lookupISBN()">Lookup</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Title</label>
+          <input class="form-control" type="text" id="itemTitle" placeholder="Book title">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Author</label>
+            <input class="form-control" type="text" id="itemAuthor" placeholder="Author name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Year</label>
+            <input class="form-control" type="text" id="itemYear" placeholder="2024">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <select class="form-control" id="itemSubject">
+              <option>Computer Science</option>
+              <option>Engineering</option>
+              <option>Medicine</option>
+              <option>Business</option>
+              <option>Humanities</option>
+              <option>Science</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Copies</label>
+            <input class="form-control" type="number" id="itemCopies" placeholder="3" min="1">
+          </div>
+        </div>
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem">
+          <button class="btn btn-primary" style="flex:1" onclick="addCatalogItem()">Save to Catalog</button>
+          <button class="btn btn-ghost" onclick="clearCatalogForm()">Clear</button>
+        </div>
+      </div>
+
+      <!-- Circulation panel -->
+      <div class="panel-card">
+        <div class="panel-card-title">🔄 Circulation — Process Loans</div>
+        <div class="form-group">
+          <label class="form-label">Patron ID / Email</label>
+          <input class="form-control" type="text" id="patronId" placeholder="e.g. u1234567 or email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Item Barcode / ISBN</label>
+          <input class="form-control" type="text" id="itemBarcode" placeholder="Scan or enter barcode">
+        </div>
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem">
+          <button class="btn btn-primary" style="flex:1" onclick="processCheckout()">Check Out</button>
+          <button class="btn btn-teal" style="flex:1" onclick="processReturn()">Check In</button>
+        </div>
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-100)">
+          <div style="font-size:0.8rem;font-weight:600;color:var(--gray-600);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Quick Patron Search</div>
+          <input class="form-control" type="text" placeholder="Search patron by name or ID…" style="margin-bottom:0.5rem">
+          <div style="font-size:0.82rem;color:var(--gray-500);font-style:italic">Start typing to see patron suggestions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active loans table -->
+    <div class="section-title" style="margin-top:1.5rem">📋 Current Circulation</div>
+    <div style="background:white;border:1px solid var(--gray-200);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm)">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Patron</th>
+            <th>Item</th>
+            <th>Checked Out</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jordan Davies (u1823011)</td>
+            <td>Clean Code — R. Martin</td>
+            <td>14 Apr 2025</td>
+            <td>28 Apr 2025</td>
+            <td><span class="status-badge status-overdue">Overdue</span></td>
+            <td><button class="btn btn-ghost btn-sm" onclick="showToast('📧','Reminder sent to Jordan Davies.')">Remind</button></td>
+          </tr>
+          <tr>
+            <td>Priya Sharma (u2041882)</td>
+            <td>Database System Concepts — Silberschatz</td>
+            <td>19 Apr 2025</td>
+            <td>03 May 2025</td>
+            <td><span class="status-badge status-on-loan">On Loan</span></td>
+            <td><button class="btn btn-ghost btn-sm" onclick="showToast('✅','Item processed as returned.')">Return</button></td>
+          </tr>
+          <tr>
+            <td>Mohammed Al-Rashid (u1974320)</td>
+            <td>Intro to Algorithms (CLRS) — Cormen et al.</td>
+            <td>22 Apr 2025</td>
+            <td>06 May 2025</td>
+            <td><span class="status-badge status-on-loan">On Loan</span></td>
+            <td><button class="btn btn-ghost btn-sm" onclick="showToast('✅','Item processed as returned.')">Return</button></td>
+          </tr>
+          <tr>
+            <td>Emma Wilson (u2113490)</td>
+            <td>The Pragmatic Programmer — Thomas & Hunt</td>
+            <td>25 Apr 2025</td>
+            <td>09 May 2025</td>
+            <td><span class="status-badge status-on-loan">On Loan</span></td>
+            <td><button class="btn btn-ghost btn-sm" onclick="showToast('✅','Item processed as returned.')">Return</button></td>
+          </tr>
+          <tr>
+            <td>Liang Chen (u1881234)</td>
+            <td>System Design Interview — Alex Xu</td>
+            <td>—</td>
+            <td>—</td>
+            <td><span class="status-badge status-reserved">Hold Ready</span></td>
+            <td><button class="btn btn-primary btn-sm" onclick="showToast('📬','Hold notification sent to Liang Chen.')">Notify</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PAGE: ADMIN
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-admin">
+  <div class="page-inner">
+    <div class="page-header">
+      <h1>System Administration</h1>
+      <p>Configure loan rules, manage users, and monitor system health.</p>
+    </div>
+
+    <div class="admin-grid">
+      <!-- Admin sidebar nav -->
+      <div class="admin-sidebar">
+        <div class="admin-menu-item active" onclick="showAdminSection('loan-rules', this)">⚙️ Loan Rules</div>
+        <div class="admin-menu-item" onclick="showAdminSection('user-mgmt', this)">👥 User Management</div>
+        <div class="admin-menu-item" onclick="showAdminSection('reports', this)">📊 Reports</div>
+        <div class="admin-menu-item" onclick="showAdminSection('system-health', this)">💚 System Health</div>
+        <div class="admin-menu-item" onclick="showAdminSection('audit-log', this)">🔒 Audit Log</div>
+      </div>
+
+      <!-- Admin content panels -->
+      <div>
+
+        <!-- Loan Rules -->
+        <div class="panel-card" id="admin-loan-rules">
+          <div class="panel-card-title">⚙️ Loan Policy Configuration</div>
+          <div class="alert alert-info" style="margin-bottom:1rem">
+            <span>ℹ️</span>
+            <div>Changes take effect within 5 minutes. No restart required. (ASR-06)</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Standard Loan Period (days)</label>
+            <div class="range-control">
+              <input type="range" min="7" max="60" value="14" id="loanPeriod" oninput="document.getElementById('loanPeriodVal').textContent=this.value+' days'">
+              <div class="range-value" id="loanPeriodVal">14 days</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Maximum Renewals per Item</label>
+            <div class="range-control">
+              <input type="range" min="0" max="5" value="2" id="maxRenewals" oninput="document.getElementById('maxRenewalsVal').textContent=this.value+'x'">
+              <div class="range-value" id="maxRenewalsVal">2x</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Fine Rate (per day overdue)</label>
+            <div class="range-control">
+              <input type="range" min="10" max="200" value="50" id="fineRate" oninput="document.getElementById('fineRateVal').textContent='$'+(this.value/100).toFixed(2)">
+              <div class="range-value" id="fineRateVal">$0.50</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Reservation Hold Duration (days)</label>
+            <div class="range-control">
+              <input type="range" min="1" max="14" value="7" id="holdDuration" oninput="document.getElementById('holdDurationVal').textContent=this.value+' days'">
+              <div class="range-value" id="holdDurationVal">7 days</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Feature Flags</label>
+            <div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-name">Automatic fine calculation</div>
+                  <div class="toggle-desc">Nightly CronJob calculates overdue fines at 02:00</div>
+                </div>
+                <div class="toggle on" onclick="toggleSwitch(this)" title="Toggle"></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-name">Due-date email reminders</div>
+                  <div class="toggle-desc">Send reminder 3 days before due date</div>
+                </div>
+                <div class="toggle on" onclick="toggleSwitch(this)"></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-name">Self-service renewals</div>
+                  <div class="toggle-desc">Allow patrons to renew loans online</div>
+                </div>
+                <div class="toggle on" onclick="toggleSwitch(this)"></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-name">Inter-library loans</div>
+                  <div class="toggle-desc">Allow requests from partner universities</div>
+                </div>
+                <div class="toggle" onclick="toggleSwitch(this)"></div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-lg" style="width:100%" onclick="saveRules()">Save Policy Changes</button>
+        </div>
+
+        <!-- User Management -->
+        <div class="panel-card" id="admin-user-mgmt" style="display:none">
+          <div class="panel-card-title">👥 User Management</div>
+          <div style="display:flex;gap:0.75rem;margin-bottom:1rem">
+            <input class="form-control" type="text" placeholder="Search users…" style="flex:1">
+            <select class="form-control" style="width:140px">
+              <option>All Roles</option>
+              <option>Student</option>
+              <option>Librarian</option>
+              <option>Admin</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="showToast('➕','User invitation sent.')">+ Invite</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr><th>Name</th><th>Role</th><th>ID</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Jordan Davies</td>
+                <td><span class="tag tag-subject">Student</span></td>
+                <td>u1823011</td>
+                <td><span class="status-badge status-available">Active</span></td>
+                <td><button class="btn btn-ghost btn-sm" onclick="showToast('🔧','User settings opened.')">Edit</button></td>
+              </tr>
+              <tr>
+                <td>Sarah Mitchell</td>
+                <td><span class="tag tag-type">Librarian</span></td>
+                <td>l0042810</td>
+                <td><span class="status-badge status-available">Active</span></td>
+                <td><button class="btn btn-ghost btn-sm" onclick="showToast('🔧','User settings opened.')">Edit</button></td>
+              </tr>
+              <tr>
+                <td>Priya Sharma</td>
+                <td><span class="tag tag-subject">Student</span></td>
+                <td>u2041882</td>
+                <td><span class="status-badge status-available">Active</span></td>
+                <td><button class="btn btn-ghost btn-sm" onclick="showToast('🔧','User settings opened.')">Edit</button></td>
+              </tr>
+              <tr>
+                <td>Mohammed Al-Rashid</td>
+                <td><span class="tag tag-subject">Student</span></td>
+                <td>u1974320</td>
+                <td><span class="status-badge status-available">Active</span></td>
+                <td><button class="btn btn-ghost btn-sm" onclick="showToast('🔧','User settings opened.')">Edit</button></td>
+              </tr>
+              <tr>
+                <td>David Okonkwo</td>
+                <td><span class="tag tag-subject">Student</span></td>
+                <td>u2200441</td>
+                <td><span class="status-badge status-overdue">Suspended</span></td>
+                <td><button class="btn btn-primary btn-sm" onclick="showToast('✅','Account reactivated.')">Reactivate</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Reports -->
+        <div class="panel-card" id="admin-reports" style="display:none">
+          <div class="panel-card-title">📊 Operational Reports</div>
+          <div class="panel-grid" style="margin-bottom:1.5rem">
+            <div style="background:var(--blue-lt);border-radius:var(--radius);padding:1rem">
+              <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--blue);font-weight:700;margin-bottom:0.25rem">Loans This Month</div>
+              <div style="font-family:var(--font-serif);font-size:2rem;color:var(--navy)">1,247</div>
+              <div style="font-size:0.78rem;color:var(--blue)">↑ 12% vs last month</div>
+            </div>
+            <div style="background:var(--teal-lt);border-radius:var(--radius);padding:1rem">
+              <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--teal);font-weight:700;margin-bottom:0.25rem">Returns On Time</div>
+              <div style="font-family:var(--font-serif);font-size:2rem;color:var(--navy)">93.4%</div>
+              <div style="font-size:0.78rem;color:var(--teal)">↑ 2.1% improvement</div>
+            </div>
+          </div>
+          <div class="form-row" style="margin-bottom:1rem">
+            <div class="form-group">
+              <label class="form-label">Report Type</label>
+              <select class="form-control">
+                <option>Loan Volume by Month</option>
+                <option>Most Borrowed Items</option>
+                <option>Overdue Analysis</option>
+                <option>Fine Collection Summary</option>
+                <option>Catalog Usage by Subject</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date Range</label>
+              <select class="form-control">
+                <option>Last 30 days</option>
+                <option>Last 3 months</option>
+                <option>Last semester</option>
+                <option>Year to date</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="showToast('📊','Report generated and ready to download.')">Generate Report</button>
+          <button class="btn btn-secondary" style="margin-left:0.5rem" onclick="showToast('📧','Report emailed to admin@university.edu.')">Email Report</button>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--gray-100)">
+            <div style="font-size:0.8rem;font-weight:600;color:var(--gray-600);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em">Top 5 Most Borrowed Items (This Month)</div>
+            <table class="data-table">
+              <thead><tr><th>Title</th><th>Author</th><th>Loans</th><th>Availability</th></tr></thead>
+              <tbody>
+                <tr><td>Clean Code</td><td>R. Martin</td><td>48</td><td><span class="status-badge status-on-loan">On Loan</span></td></tr>
+                <tr><td>DDIA — Kleppmann</td><td>M. Kleppmann</td><td>41</td><td><span class="status-badge status-available">Available (1)</span></td></tr>
+                <tr><td>The Pragmatic Programmer</td><td>Thomas & Hunt</td><td>37</td><td><span class="status-badge status-available">Available (2)</span></td></tr>
+                <tr><td>System Design Interview</td><td>Alex Xu</td><td>33</td><td><span class="status-badge status-reserved">Hold: 2 waiting</span></td></tr>
+                <tr><td>CLRS Algorithms</td><td>Cormen et al.</td><td>29</td><td><span class="status-badge status-on-loan">On Loan</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- System Health -->
+        <div class="panel-card" id="admin-system-health" style="display:none">
+          <div class="panel-card-title">💚 System Health</div>
+          <div class="alert alert-success" style="margin-bottom:1rem">
+            <span>✅</span>
+            <div>All systems operational. Last check: 2 minutes ago.</div>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Service</th><th>Status</th><th>Pods</th><th>P95 Latency</th><th>CPU</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>API Gateway</td>
+                <td><span class="status-badge status-available">● Healthy</span></td>
+                <td>2 / 2</td>
+                <td>38ms</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem">28%
+                    <div class="avail-bar" style="width:80px"><div class="avail-fill" style="width:28%;background:var(--green)"></div></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Catalog Service</td>
+                <td><span class="status-badge status-available">● Healthy</span></td>
+                <td>4 / 8</td>
+                <td>680ms</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem">61%
+                    <div class="avail-bar" style="width:80px"><div class="avail-fill" style="width:61%;background:var(--amber)"></div></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Loan Service</td>
+                <td><span class="status-badge status-available">● Healthy</span></td>
+                <td>2 / 6</td>
+                <td>142ms</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem">33%
+                    <div class="avail-bar" style="width:80px"><div class="avail-fill" style="width:33%;background:var(--green)"></div></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Notification Service</td>
+                <td><span class="status-badge status-available">● Healthy</span></td>
+                <td>1 / 3</td>
+                <td>—</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem">14%
+                    <div class="avail-bar" style="width:80px"><div class="avail-fill" style="width:14%;background:var(--green)"></div></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>PostgreSQL Primary</td>
+                <td><span class="status-badge status-available">● Healthy</span></td>
+                <td>—</td>
+                <td>18ms</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem">22%
+                    <div class="avail-bar" style="width:80px"><div class="avail-fill" style="width:22%;background:var(--green)"></div></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Elasticsearch</td>
+                <td><span class="status-badge status-available">● Healthy</span></td>
+                <td>3 / 3</td>
+                <td>520ms</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem">44%
+                    <div class="avail-bar" style="width:80px"><div class="avail-fill" style="width:44%;background:var(--green)"></div></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Redis Cache</td>
+                <td><span class="status-badge status-available">● Healthy</span></td>
+                <td>3 / 3</td>
+                <td>2ms</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem">9%
+                    <div class="avail-bar" style="width:80px"><div class="avail-fill" style="width:9%;background:var(--green)"></div></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>RabbitMQ</td>
+                <td><span class="status-badge status-available">● Healthy</span></td>
+                <td>3 / 3</td>
+                <td>—</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.82rem">7%
+                    <div class="avail-bar" style="width:80px"><div class="avail-fill" style="width:7%;background:var(--green)"></div></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Audit Log -->
+        <div class="panel-card" id="admin-audit-log" style="display:none">
+          <div class="panel-card-title">🔒 Audit Log</div>
+          <div style="display:flex;gap:0.75rem;margin-bottom:1rem">
+            <input class="form-control" type="text" placeholder="Search audit events…" style="flex:1">
+            <select class="form-control" style="width:150px">
+              <option>All Actions</option>
+              <option>Loan Events</option>
+              <option>Auth Events</option>
+              <option>Config Changes</option>
+              <option>User Changes</option>
+            </select>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Timestamp (UTC)</th><th>Actor</th><th>Action</th><th>Entity</th><th>IP</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-size:0.78rem;color:var(--gray-500)">2025-05-02 08:14:22</td>
+                <td>Jordan Davies</td>
+                <td><span class="tag tag-type" style="font-size:0.72rem">LOAN_CREATED</span></td>
+                <td>Copy #8841 — Pragmatic Programmer</td>
+                <td style="font-size:0.78rem;color:var(--gray-500)">192.168.1.44</td>
+              </tr>
+              <tr>
+                <td style="font-size:0.78rem;color:var(--gray-500)">2025-05-02 07:55:10</td>
+                <td>Sarah Mitchell</td>
+                <td><span class="tag tag-subject" style="font-size:0.72rem">CATALOG_UPDATE</span></td>
+                <td>ISBN 978-0-13-110362-7</td>
+                <td style="font-size:0.78rem;color:var(--gray-500)">10.0.0.12</td>
+              </tr>
+              <tr>
+                <td style="font-size:0.78rem;color:var(--gray-500)">2025-05-02 07:42:01</td>
+                <td>Admin System</td>
+                <td><span class="tag" style="background:#FEF3C7;color:#92400E;font-size:0.72rem">FINE_CALCULATED</span></td>
+                <td>Loan #20194 — Clean Code</td>
+                <td style="font-size:0.78rem;color:var(--gray-500)">internal</td>
+              </tr>
+              <tr>
+                <td style="font-size:0.78rem;color:var(--gray-500)">2025-05-02 07:00:03</td>
+                <td>Admin System</td>
+                <td><span class="tag" style="background:#FEF3C7;color:#92400E;font-size:0.72rem">NOTIFICATION_SENT</span></td>
+                <td>Due-date reminder batch — 42 emails</td>
+                <td style="font-size:0.78rem;color:var(--gray-500)">internal</td>
+              </tr>
+              <tr>
+                <td style="font-size:0.78rem;color:var(--gray-500)">2025-05-01 22:31:55</td>
+                <td>Admin (sysadmin)</td>
+                <td><span class="tag tag-doi" style="font-size:0.72rem">CONFIG_CHANGE</span></td>
+                <td>loan_period: 14 → 21 days</td>
+                <td style="font-size:0.78rem;color:var(--gray-500)">10.0.0.5</td>
+              </tr>
+              <tr>
+                <td style="font-size:0.78rem;color:var(--gray-500)">2025-05-01 16:18:44</td>
+                <td>Priya Sharma</td>
+                <td><span class="tag" style="background:#F0FDF4;color:#166534;font-size:0.72rem">LOAN_RETURNED</span></td>
+                <td>Copy #6620 — Database System Concepts</td>
+                <td style="font-size:0.78rem;color:var(--gray-500)">172.16.0.88</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top:0.75rem;font-size:0.78rem;color:var(--gray-500);font-style:italic">
+            Audit log is append-only and retained for 3 years. (ASR-08)
+          </div>
+        </div>
+
+      </div><!-- /admin content -->
+    </div><!-- /admin grid -->
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     MODAL — Book Detail
+═══════════════════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="bookModal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Book Title</div>
+    <div class="modal-sub" id="modalAuthor">Author · Publisher · Year</div>
+    <div class="modal-body">
+      <div class="modal-detail-row">
+        <div class="modal-detail-label">ISBN</div>
+        <div class="modal-detail-value" id="modalISBN">—</div>
+      </div>
+      <div class="modal-detail-row">
+        <div class="modal-detail-label">Subject</div>
+        <div class="modal-detail-value" id="modalSubject">—</div>
+      </div>
+      <div class="modal-detail-row">
+        <div class="modal-detail-label">Type</div>
+        <div class="modal-detail-value" id="modalType">—</div>
+      </div>
+      <div class="modal-detail-row">
+        <div class="modal-detail-label">Copies</div>
+        <div class="modal-detail-value" id="modalCopies">—</div>
+      </div>
+      <div class="modal-detail-row">
+        <div class="modal-detail-label">Location</div>
+        <div class="modal-detail-value" id="modalLocation">Main Library, Level 2</div>
+      </div>
+      <div class="modal-detail-row">
+        <div class="modal-detail-label">Status</div>
+        <div class="modal-detail-value" id="modalStatus">—</div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      <button class="btn btn-secondary" onclick="reserveBook(); closeModal()">🔖 Reserve</button>
+      <button class="btn btn-primary" id="modalBorrowBtn" onclick="borrowBook(); closeModal()">📖 Borrow</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"><span class="toast-icon" id="toastIcon">✅</span><span id="toastMsg">Action completed.</span></div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════════════ -->
+<script>
+// ── Data ─────────────────────────────────────────────────────────
+const BOOKS = [
+  { id:1, title:"Clean Code: A Handbook of Agile Software Craftsmanship", author:"Robert C. Martin", year:2008, publisher:"Prentice Hall", isbn:"978-0-13-235088-4", subject:"Computer Science", type:"Book", emoji:"📙", bg:"#FEF3C7", available:0, total:3, status:"out" },
+  { id:2, title:"Designing Data-Intensive Applications", author:"Martin Kleppmann", year:2017, publisher:"O'Reilly Media", isbn:"978-1-4919-0310-7", subject:"Computer Science", type:"Book", emoji:"📘", bg:"#EFF6FF", available:1, total:3, status:"limited" },
+  { id:3, title:"The Pragmatic Programmer: Your Journey to Mastery", author:"David Thomas, Andrew Hunt", year:2019, publisher:"Addison-Wesley", isbn:"978-0-13-595705-9", subject:"Computer Science", type:"Book", emoji:"📗", bg:"#F0FDF4", available:2, total:3, status:"available" },
+  { id:4, title:"Introduction to Algorithms (CLRS), 4th Edition", author:"Cormen, Leiserson, Rivest, Stein", year:2022, publisher:"MIT Press", isbn:"978-0-26-204630-5", subject:"Computer Science", type:"Book", emoji:"📕", bg:"#FDF4FF", available:0, total:2, status:"out" },
+  { id:5, title:"System Design Interview: An Insider's Guide", author:"Alex Xu", year:2020, publisher:"ByteByteGo", isbn:"978-1-7364-2510-5", subject:"Computer Science", type:"Book", emoji:"📒", bg:"#ECFDF5", available:0, total:2, status:"out" },
+  { id:6, title:"Database System Concepts, 7th Edition", author:"Abraham Silberschatz, Henry Korth", year:2019, publisher:"McGraw-Hill", isbn:"978-0-07-802215-9", subject:"Computer Science", type:"Book", emoji:"📓", bg:"#FFF7ED", available:3, total:4, status:"available" },
+  { id:7, title:"Artificial Intelligence: A Modern Approach", author:"Stuart Russell, Peter Norvig", year:2020, publisher:"Pearson", isbn:"978-0-13-468599-1", subject:"Computer Science", type:"Book", emoji:"🤖", bg:"#EFF6FF", available:2, total:3, status:"available" },
+  { id:8, title:"Computer Networks, 6th Edition", author:"Andrew S. Tanenbaum, David Wetherall", year:2021, publisher:"Pearson", isbn:"978-0-13-668332-8", subject:"Engineering", type:"Book", emoji:"🌐", bg:"#F0FDF4", available:1, total:2, status:"limited" },
+];
+
+let currentFilter = 'all';
+let selectedBook  = null;
+let currentRole   = 'student';
+
+// ── Role management ───────────────────────────────────────────────
+const ROLES = {
+  student:   { label:"Student",   avatar:"JD", name:"Jordan Davies",       badge:"Student"    },
+  librarian: { label:"Librarian", avatar:"SM", name:"Sarah Mitchell",      badge:"Librarian"  },
+  admin:     { label:"Admin",     avatar:"AD", name:"Admin User",          badge:"Admin"      },
+};
+
+function switchRole(role) {
+  currentRole = role;
+  const info = ROLES[role];
+  document.getElementById('roleBadge').textContent  = info.badge;
+  document.getElementById('userAvatar').textContent = info.avatar;
+  document.getElementById('loanUserName').textContent = info.name;
+
+  // Show/hide nav items
+  const libNav   = document.getElementById('nav-librarian');
+  const adminNav = document.getElementById('nav-admin');
+  libNav.style.opacity   = (role === 'librarian' || role === 'admin') ? '1' : '0.35';
+  libNav.style.pointerEvents = (role === 'librarian' || role === 'admin') ? 'auto' : 'none';
+  adminNav.style.opacity = (role === 'admin') ? '1' : '0.35';
+  adminNav.style.pointerEvents = (role === 'admin') ? 'auto' : 'none';
+
+  showToast('👤', `Switched to ${info.badge} view.`);
+  if (role === 'student') showPage('search');
+}
+
+// ── Page navigation ───────────────────────────────────────────────
+function showPage(id) {
+  // Role guards
+  if (id === 'librarian' && currentRole === 'student') {
+    showToast('🔒', 'Access denied. Librarian role required.'); return;
+  }
+  if (id === 'admin' && currentRole !== 'admin') {
+    showToast('🔒', 'Access denied. Admin role required.'); return;
+  }
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const map = { search:'Search', loans:'My Loans', librarian:'Librarian', admin:'Admin' };
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if (b.textContent.trim() === map[id]) b.classList.add('active');
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Book rendering ────────────────────────────────────────────────
+function renderBooks(books) {
+  const list = document.getElementById('bookList');
+  const count = document.getElementById('resultsCount');
+  count.innerHTML = `<strong>${books.length}</strong> result${books.length !== 1 ? 's' : ''} found`;
+
+  if (books.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--gray-500)">
+      <div style="font-size:3rem;margin-bottom:1rem">🔍</div>
+      <div style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem">No results found</div>
+      <div style="font-size:0.9rem">Try different keywords or remove filters.</div>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = books.map(b => {
+    const availColor = b.status === 'available' ? 'var(--green)' : b.status === 'limited' ? 'var(--amber)' : 'var(--red)';
+    const availLabel = b.status === 'available'
+      ? `<span class="avail-dot avail-available"></span>${b.available} of ${b.total} available`
+      : b.status === 'limited'
+      ? `<span class="avail-dot avail-limited"></span>${b.available} of ${b.total} available`
+      : `<span class="avail-dot avail-out"></span>All ${b.total} copies on loan`;
+    const pct = Math.round(b.available / b.total * 100);
+
+    return `<div class="book-card" onclick="openModal(${b.id})">
+      <div class="book-cover" style="background:${b.bg}">${b.emoji}</div>
+      <div class="book-info">
+        <div class="book-title">${b.title}</div>
+        <div class="book-author">${b.author} · ${b.publisher}, ${b.year}</div>
+        <div class="book-meta">
+          <span class="tag tag-subject">${b.subject}</span>
+          <span class="tag tag-type">${b.type}</span>
+          <span class="tag tag-year">${b.year}</span>
+          <span class="tag tag-doi">ISBN: ${b.isbn}</span>
+        </div>
+        <div class="book-availability">
+          ${availLabel}
+          <div class="avail-bar" style="width:100px;display:inline-block">
+            <div class="avail-fill" style="width:${pct}%;background:${availColor}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="book-actions">
+        ${b.status !== 'out'
+          ? `<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();borrowDirect(${b.id})">📖 Borrow</button>`
+          : `<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();reserveDirect(${b.id})">🔖 Reserve</button>`
+        }
+        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openModal(${b.id})">Details</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Search / filter ───────────────────────────────────────────────
+function filterBooks() {
+  const q = (document.getElementById('searchInput').value || '').toLowerCase();
+  const filtered = BOOKS.filter(b => {
+    const matchType = currentFilter === 'all'
+      || (currentFilter === 'book'    && b.type === 'Book')
+      || (currentFilter === 'journal' && b.type === 'Journal')
+      || (currentFilter === 'thesis'  && b.type === 'Thesis')
+      || (currentFilter === 'digital' && b.type === 'Digital');
+    const matchQ = !q
+      || b.title.toLowerCase().includes(q)
+      || b.author.toLowerCase().includes(q)
+      || b.subject.toLowerCase().includes(q)
+      || b.isbn.includes(q);
+    return matchType && matchQ;
+  });
+  renderBooks(filtered);
+}
+
+function setFilter(type, el) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  filterBooks();
+}
+
+// ── Modal ─────────────────────────────────────────────────────────
+function openModal(id) {
+  const b = BOOKS.find(x => x.id === id);
+  if (!b) return;
+  selectedBook = b;
+  document.getElementById('modalTitle').textContent   = b.title;
+  document.getElementById('modalAuthor').textContent  = `${b.author} · ${b.publisher}, ${b.year}`;
+  document.getElementById('modalISBN').textContent    = b.isbn;
+  document.getElementById('modalSubject').textContent = b.subject;
+  document.getElementById('modalType').textContent    = b.type;
+  document.getElementById('modalCopies').textContent  = `${b.available} available / ${b.total} total`;
+  document.getElementById('modalStatus').textContent  =
+    b.status === 'available' ? '✅ Available' :
+    b.status === 'limited'   ? '⚠️ Limited copies available' :
+                               '❌ All copies currently on loan';
+  const bBtn = document.getElementById('modalBorrowBtn');
+  bBtn.disabled = b.status === 'out';
+  bBtn.style.opacity = b.status === 'out' ? '0.45' : '1';
+  document.getElementById('bookModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('bookModal').classList.remove('open');
+}
+document.getElementById('bookModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ── Borrow / reserve ──────────────────────────────────────────────
+function borrowBook() {
+  if (!selectedBook || selectedBook.status === 'out') return;
+  showToast('📖', `"${selectedBook.title.split(':')[0]}" borrowed! Due in 14 days.`);
+  selectedBook.available = Math.max(0, selectedBook.available - 1);
+  if (selectedBook.available === 0) selectedBook.status = 'out';
+  else if (selectedBook.available === 1) selectedBook.status = 'limited';
+  filterBooks();
+}
+function reserveBook() {
+  if (!selectedBook) return;
+  showToast('🔖', `Reservation placed for "${selectedBook.title.split(':')[0]}". You are #1 in queue.`);
+}
+function borrowDirect(id) {
+  const b = BOOKS.find(x => x.id === id);
+  if (!b || b.status === 'out') return;
+  showToast('📖', `"${b.title.split(':')[0]}" borrowed! Due in 14 days.`);
+  b.available = Math.max(0, b.available - 1);
+  if (b.available === 0) b.status = 'out';
+  else if (b.available === 1) b.status = 'limited';
+  filterBooks();
+}
+function reserveDirect(id) {
+  const b = BOOKS.find(x => x.id === id);
+  showToast('🔖', `Reservation placed for "${b.title.split(':')[0]}". You're in queue.`);
+}
+
+// ── Librarian actions ─────────────────────────────────────────────
+function lookupISBN() {
+  const isbn = document.getElementById('isbnInput').value.trim();
+  if (!isbn) { showToast('⚠️', 'Please enter an ISBN to look up.'); return; }
+  document.getElementById('itemTitle').value  = 'Software Engineering, 10th Edition';
+  document.getElementById('itemAuthor').value = 'Ian Sommerville';
+  document.getElementById('itemYear').value   = '2015';
+  document.getElementById('itemCopies').value = '3';
+  showToast('🔍', 'ISBN metadata loaded from publisher API.');
+}
+function addCatalogItem() {
+  const title = document.getElementById('itemTitle').value.trim();
+  if (!title) { showToast('⚠️', 'Please enter a title before saving.'); return; }
+  showToast('✅', `"${title}" added to catalog. Elasticsearch index will update within 30 seconds.`);
+  clearCatalogForm();
+}
+function clearCatalogForm() {
+  ['isbnInput','itemTitle','itemAuthor','itemYear','itemCopies'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+function processCheckout() {
+  const patron  = document.getElementById('patronId').value.trim();
+  const barcode = document.getElementById('itemBarcode').value.trim();
+  if (!patron || !barcode) { showToast('⚠️', 'Please enter both Patron ID and Item barcode.'); return; }
+  showToast('✅', `Checkout successful. Due date: ${getDueDate(14)}.`);
+  document.getElementById('patronId').value  = '';
+  document.getElementById('itemBarcode').value = '';
+}
+function processReturn() {
+  const barcode = document.getElementById('itemBarcode').value.trim();
+  if (!barcode) { showToast('⚠️', 'Please enter the item barcode to check in.'); return; }
+  showToast('📥', `Item checked in successfully. Catalog updated.`);
+  document.getElementById('itemBarcode').value = '';
+}
+function getDueDate(days) {
+  const d = new Date(); d.setDate(d.getDate() + days);
+  return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+// ── Admin actions ─────────────────────────────────────────────────
+function showAdminSection(id, el) {
+  ['loan-rules','user-mgmt','reports','system-health','audit-log'].forEach(s => {
+    const el = document.getElementById('admin-' + s.replace('-','_').replace(/-/g,'_'));
+    if (el) el.style.display = 'none';
+  });
+  // map dashes properly
+  const map = {
+    'loan-rules': 'admin-loan-rules',
+    'user-mgmt':  'admin-user-mgmt',
+    'reports':    'admin-reports',
+    'system-health': 'admin-system-health',
+    'audit-log':  'admin-audit-log',
+  };
+  const target = document.getElementById(map[id]);
+  if (target) target.style.display = 'block';
+  document.querySelectorAll('.admin-menu-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function saveRules() {
+  const period  = document.getElementById('loanPeriod').value;
+  const fine    = (document.getElementById('fineRate').value / 100).toFixed(2);
+  showToast('💾', `Policy saved: ${period}-day loan period, $${fine}/day fine rate. Live in <5 min.`);
+}
+
+function toggleSwitch(el) {
+  el.classList.toggle('on');
+  const isOn = el.classList.contains('on');
+  showToast(isOn ? '✅' : '⚠️', `Feature ${isOn ? 'enabled' : 'disabled'}.`);
+}
+
+// ── Toast ─────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(icon, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent  = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3800);
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+renderBooks(BOOKS);
+// Initial role setup
+switchRole('student');
+document.getElementById('roleSwitcher').value = 'student';
+</script>
+
+<footer class="footer">
+  <div style="margin-bottom:0.45rem">
+    <strong>UDLMS</strong> — University Digital Library Management System &nbsp;|&nbsp;
+    SENG5232 Software Architecture and Design &nbsp;|&nbsp;
+    Working Prototype v1.0
+  </div>
+  <div style="color:#CBD5E1; font-size:0.82rem; font-weight:500; margin-bottom:0.2rem">
+    Submitted by &nbsp;<strong style="color:#7DD3FC">Eyob Amaha Araya</strong>
+    &nbsp;&nbsp;|&nbsp;&nbsp; ID: <strong style="color:#7DD3FC">UGR/189595/16</strong>
+    &nbsp;&nbsp;|&nbsp;&nbsp; Section <strong style="color:#7DD3FC">2</strong>
+  </div>
+  <div style="color:#64748B; font-size:0.72rem">
+    Demonstrates: Search &amp; Catalog · My Loans Dashboard · Librarian Circulation · Admin Configuration
+  </div>
+</footer>
+</div>
+</body>
+</html>
